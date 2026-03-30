@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rifa da Bárbara — CF-L1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ── Backgrounds ── */
+    --bg:       #080810;
+    --surface:  #0f0f1c;
+    --surface2: #161628;
+    --surface3: #1e1e35;
+
+    /* ── Borders ── */
+    --border:      rgba(140,130,255,0.1);
+    --border-hover: rgba(255,80,120,0.35);
+
+    /* ── Primary accent: vivid crimson-rose ── */
+    --accent:    #ff2d6b;
+    --accent-dim: rgba(255,45,107,0.15);
+
+    /* ── Secondary accent: electric violet ── */
+    --violet:    #9b5cff;
+    --violet-dim: rgba(155,92,255,0.12);
+
+    /* ── Highlight: warm amber ── */
+    --amber:    #ffb830;
+    --amber-dim: rgba(255,184,48,0.12);
+
+    /* ── Success / Pix: mint green ── */
+    --mint:     #00d68f;
+    --mint-dim:  rgba(0,214,143,0.1);
+
+    /* ── Text ── */
+    --text:  #eeeef8;
+    --muted: #7070a0;
+    --faint: #3a3a60;
+
+    --radius: 12px;
+
+    /* ── Gradient shortcuts ── */
+    --grad-fire:   linear-gradient(135deg, #ff2d6b 0%, #ff7a45 100%);
+    --grad-cosmic: linear-gradient(135deg, #9b5cff 0%, #ff2d6b 100%);
+    --grad-gold:   linear-gradient(135deg, #ffb830 0%, #ff7a45 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px 40px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% -5%,  rgba(255,45,107,0.22)  0%, transparent 65%),
+      radial-gradient(ellipse 50% 45% at 10%  60%, rgba(155,92,255,0.14)  0%, transparent 60%),
+      radial-gradient(ellipse 40% 35% at 90%  80%, rgba(255,184,48,0.08)  0%, transparent 55%),
+      var(--bg);
+    z-index: 0;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(155,92,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,107,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero > * { position: relative; z-index: 1; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,45,107,0.1);
+    border: 1px solid rgba(255,45,107,0.28);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ff7aaa;
+    margin-bottom: 28px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .badge span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 1.5s ease infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(13px, 2vw, 16px);
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    margin-bottom: 12px;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 12vw, 120px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #fff 0%, #ffb0cc 45%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+
+  .hero-subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(24px, 5vw, 52px);
+    letter-spacing: 0.08em;
+    background: var(--grad-cosmic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s ease 0.3s both;
+  }
+
+  .hero-desc {
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease 0.4s both;
+  }
+
+  .hero-desc strong { color: var(--text); }
+
+  .hero-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease 0.5s both;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 120px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(255,45,107,0.35);
+    box-shadow: 0 0 24px rgba(255,45,107,0.08);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    background: var(--grad-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  .scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: fadeDown 0.7s ease 0.8s both;
+  }
+
+  .scroll-hint svg { animation: bounce 2s ease infinite; }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 80px 24px; position: relative; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    background: var(--grad-cosmic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+    line-height: 1.05;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 48px;
+  }
+
+  /* ── ABOUT CROSSFIT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .about-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(155,92,255,0.3);
+    box-shadow: 0 8px 32px rgba(155,92,255,0.08);
+  }
+
+  .about-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .about-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    background: var(--grad-cosmic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .about-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ── RIFA ── */
+  #rifa { background: var(--surface); }
+
+  .rifa-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--grad-fire);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(255,45,107,0.3);
+  }
+
+  .search-box {
+    margin-left: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 18px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-box:focus {
+    border-color: rgba(155,92,255,0.4);
+    box-shadow: 0 0 0 3px rgba(155,92,255,0.08);
+  }
+  .search-box::placeholder { color: var(--muted); }
+
+  .loading-msg {
+    text-align: center;
+    padding: 60px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .loading-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-right-color: var(--violet);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+  }
+
+  .num-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .num-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--grad-cosmic);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .num-card:hover { border-color: rgba(155,92,255,0.4); box-shadow: 0 4px 20px rgba(155,92,255,0.12); }
+  .num-card:hover::before { opacity: 0.07; }
+
+  .num-card.vendido {
+    background: rgba(255,45,107,0.07);
+    border-color: rgba(255,45,107,0.2);
+    cursor: default;
+  }
+
+  .num-card.vendido:hover { box-shadow: none; border-color: rgba(255,45,107,0.2); }
+  .num-card.vendido::before { display: none; }
+  .num-card.vendido .num-num { background: var(--grad-fire); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .num-card.vendido .num-tag { background: var(--accent); color: #fff; }
+
+  .num-card.livre .num-tag { background: rgba(0,214,143,0.12); color: var(--mint); border: 1px solid rgba(0,214,143,0.22); }
+
+  .num-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .num-name {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    margin: 2px 0 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .num-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 2px 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .rifa-summary {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .summary-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .summary-chip .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── PROGRESS SECTION ── */
+  #progresso { background: var(--bg); }
+
+  .progress-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(155,92,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .progress-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,45,107,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .progress-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .progress-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .progress-meta { color: var(--muted); font-size: 13px; }
+  .progress-meta strong { color: var(--text); }
+
+  .progress-bar-track {
+    background: var(--surface3);
+    border-radius: 100px;
+    height: 20px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--violet) 50%, var(--amber) 100%);
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    animation: shimmer 2s ease infinite;
+  }
+
+  @keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
+
+  .progress-ticks {
+    display: flex;
+    justify-content: space-between;
+    color: var(--faint);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    margin-bottom: 40px;
+  }
+
+  .progress-goal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .goal-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .goal-item .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .goal-item .value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.03em; background: var(--grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .goal-item .detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── PIX ── */
+  .pix-section {
+    margin-top: 48px;
+    background: linear-gradient(135deg, rgba(0,214,143,0.06) 0%, rgba(0,180,120,0.02) 100%);
+    border: 1px solid rgba(0,214,143,0.18);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pix-section::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 120px;
+    background: radial-gradient(ellipse, rgba(0,214,143,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .pix-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+    position: relative;
+  }
+
+  .pix-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--mint);
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .pix-desc { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 440px; margin: 0 auto 24px; position: relative; }
+
+  .pix-key-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(0,214,143,0.25);
+    border-radius: var(--radius);
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .pix-key-box:hover {
+    border-color: rgba(0,214,143,0.55);
+    background: rgba(0,214,143,0.06);
+    box-shadow: 0 0 24px rgba(0,214,143,0.1);
+  }
+
+  .pix-key-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--mint);
+  }
+
+  .pix-copy-btn {
+    background: rgba(0,214,143,0.14);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: var(--mint);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+
+  .pix-copy-btn:hover { background: rgba(0,214,143,0.26); }
+
+  .pix-copied {
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--mint);
+    color: #000;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .pix-copied.show { opacity: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  footer strong {
+    background: var(--grad-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── CONFIG BANNER ── */
+  .config-banner {
+    background: rgba(255,184,48,0.07);
+    border: 1px solid rgba(255,184,48,0.18);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--amber);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: var(--surface2);
+    border: 1px solid rgba(155,92,255,0.2);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: modalIn 0.3s ease;
+    box-shadow: 0 24px 80px rgba(155,92,255,0.15);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    background: var(--grad-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .modal h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+
+  .modal-close {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 28px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    border-color: rgba(255,45,107,0.4);
+    color: var(--accent);
+    box-shadow: 0 0 16px rgba(255,45,107,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .progress-wrapper { padding: 28px 20px; }
+    .pix-section { padding: 28px 20px; }
+    .rifa-controls { flex-direction: column; align-items: stretch; }
+    .search-box { margin-left: 0; width: 100%; }
+  }
+
+  /* ── HERO PHOTO ── */
+  .hero-photo-wrap {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.5s ease both;
+  }
+
+  .hero-photo-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent), var(--violet), var(--amber), var(--accent));
+    z-index: 0;
+    animation: spin 4s linear infinite;
+  }
+
+  .hero-photo-label {
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+    overflow: hidden;
+    display: block;
+    background: var(--surface2);
+  }
+
+  .hero-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--muted);
+    transition: color 0.2s, background 0.2s;
+    border-radius: 50%;
+  }
+
+  .hero-photo-placeholder span { font-size: 10px; font-weight: 500; }
+  .hero-photo-placeholder small { font-size: 9px; color: var(--faint); }
+
+  .hero-photo-label:hover .hero-photo-placeholder {
+    color: var(--accent);
+    background: rgba(255,45,107,0.05);
+  }
+
+  #hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 20px rgba(255,45,107,0.4),
+    0 0 40px rgba(155,92,255,0.25);
+}
+
+  /* ── COURSE COST BANNER ── */
+  .course-cost-banner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    animation: fadeDown 0.7s ease 0.45s both;
+  }
+
+  .cost-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 28px;
+    flex: 1;
+    min-width: 160px;
+    transition: background 0.2s;
+  }
+
+  .cost-item:hover { background: rgba(255,45,107,0.04); }
+
+  .cost-icon { font-size: 24px; flex-shrink: 0; }
+
+  .cost-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .cost-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.04em;
+    background: var(--grad-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+
+  .cost-detail { font-size: 11px; color: var(--faint); margin-top: 1px; }
+
+  .cost-divider {
+    width: 1px;
+    height: 48px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 540px) {
+    .course-cost-banner { flex-direction: column; }
+    .cost-divider { width: 100%; height: 1px; }
+    .cost-item { justify-content: center; }
+  }
+  /* ── PREMIOS ── */
+#premios {
+  background: #0d0d18;
+}
+
+.premios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.premio-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  position: relative;
+  transition: all 0.25s;
+}
+
+.premio-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,45,107,0.3);
+  box-shadow: 0 10px 40px rgba(255,45,107,0.12);
+}
+
+/* destaque do principal */
+.premio-card.destaque {
+  border: 1px solid rgba(255,184,48,0.4);
+  box-shadow: 0 10px 40px rgba(255,184,48,0.15);
+}
+
+.premio-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--grad-gold);
+  color: #000;
+  font-weight: 600;
+}
+
+.premio-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.premio-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.premio-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.premio-valor {
+  margin-top: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  background: var(--grad-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* info extra */
+.premio-info {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="badge"><span></span> Campanha ativa · Ajude a Bárbara</div>
+
+  <!-- Foto -->
+  <div class="hero-photo-wrap">
+    <label class="hero-photo-label" id="photo-label" title="Clique para adicionar a foto da Bárbara">
+     
+	 
+	  
+      <img id="hero-photo" src="/images/barbara.jpg" alt="Bárbara">
+    </label>
+    <div class="hero-photo-ring"></div>
+  </div>
+
+  <p class="hero-eyebrow">Rifa Solidária · CrossFit L1</p>
+
+  <!-- NOME MAIS IMPACTANTE -->
+  <h1 class="hero-title">
+    BÁRBARA <span style="color:var(--accent)">BIER</span>
+  </h1>
+
+  <p class="hero-subtitle">CF-L1 TRAINER CERTIFICATE</p>
+
+  <!-- TEXTO MAIS DIRETO E EMOCIONAL -->
+  <p class="hero-desc">
+    A Bárbara está dando um passo gigante para se tornar <strong>Coach de CrossFit</strong>.  
+    Esse curso é a porta de entrada para transformar vidas — e você pode fazer parte disso.
+  </p>
+
+  <!-- 🔥 CTA (ESSENCIAL) -->
+  <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;">
+    <a href="#rifa" style="
+      background: var(--grad-fire);
+      color:#fff;
+      padding:14px 28px;
+      border-radius:100px;
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:0.05em;
+      text-decoration:none;
+      box-shadow:0 6px 24px rgba(255,45,107,0.4);
+      transition:transform .2s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+      Escolher número
+    </a>
+
+    <a href="#progresso" style="
+      border:1px solid var(--border);
+      color:var(--text);
+      padding:14px 28px;
+      border-radius:100px;
+      font-size:14px;
+      text-decoration:none;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='#ff2d6b'" onmouseout="this.style.borderColor='var(--border)'">
+      Ver progresso
+    </a>
+  </div>
+
+  <!-- CUSTO -->
+  <div class="course-cost-banner">
+    <div class="cost-item">
+      <span class="cost-icon">💸</span>
+      <div>
+        <div class="cost-label">Custo do curso</div>
+        <div class="cost-value">~R$ 5.300</div>
+        <div class="cost-detail">US$ 1.000 · CrossFit oficial</div>
+      </div>
+    </div>
+
+    <div class="cost-divider"></div>
+
+    <div class="cost-item">
+      <span class="cost-icon">🎯</span>
+      <div>
+        <div class="cost-label">Meta da rifa</div>
+        <div class="cost-value">R$ 1.500</div>
+        <div class="cost-detail">100 números × R$ 15</div>
+      </div>
+    </div>
+
+    <div class="cost-divider"></div>
+
+    <div class="cost-item">
+      <span class="cost-icon">🔥</span>
+      <div>
+        <div class="cost-label">Impacto</div>
+        <div class="cost-value">Futura Coach</div>
+        <div class="cost-detail">mudando vidas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">100</div>
+      <div class="stat-label">Números</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">R$15</div>
+      <div class="stat-label">Por número</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-num" id="stat-vendidos">—</div>
+      <div class="stat-label">Vendidos</div>
+    </div>
+  </div>
+
+  <!-- FRASE FINAL (emocional) -->
+  <p style="
+    margin-top:32px;
+    font-size:13px;
+    color:var(--muted);
+    max-width:420px;
+  ">
+    Cada número comprado é um passo mais perto do sonho dela 💪
+  </p>
+
+   
+</section>
+
+<!-- ══ SOBRE O CF-L1 ══ -->
+<section id="sobre">
+  <div class="container">
+    <p class="section-label">O que é o CF-L1?</p>
+    <h2 class="section-title">A CERTIFICAÇÃO<br>QUE VAI MUDAR TUDO</h2>
+    <p class="section-sub">O CrossFit Level 1 é a porta de entrada para o mundo do coaching de alta performance. Um curso intensivo reconhecido mundialmente.</p>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <span class="about-icon">📅</span>
+        <h3>2 Dias Presenciais</h3>
+        <p>Seminário intensivo com aulas teóricas, sessões práticas em pequenos grupos e treinos guiados por coaches da equipe oficial CrossFit. Depois, 8 dias para concluir a prova online de 50 questões.</p>
+      </div>
+      <div class="about-card">
+        <span class="about-icon">🌍</span>
+        <h3>Reconhecimento Mundial</h3>
+        <p>Mais de 300 mil coaches já fizeram o CF-L1 — a credencial obrigatória para atuar em qualquer box afiliado CrossFit no mundo. Válida por 5 anos e ponto de partida para os níveis L2, L3 e L4.</p>
+      </div>
+      <div class="about-card">
+        <span class="about-icon">💸</span>
+        <h3>Investimento Real</h3>
+        <p>O curso custa <strong style="color:var(--accent)">US$ 1.000</strong> (~R$ 5.300) cobrado diretamente pela CrossFit LLC. A rifa vai cobrir parte desse valor e dar asas ao sonho da Bárbara!</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="premios">
+  <div class="container">
+
+    <p class="section-label">Premiação</p>
+    <h2 class="section-title">O QUE VOCÊ<br>PODE GANHAR</h2>
+    <p class="section-sub">
+      Além de ajudar a Bárbara, você ainda concorre a prêmios especiais 🎁
+    </p>
+
+    <div class="premios-grid">
+
+      <!-- PRÊMIO 1 -->
+      <div class="premio-card destaque">
+        <div class="premio-badge">1º PRÊMIO</div>
+        <div class="premio-icon">🏆</div>
+        <h3>Prêmio Principal</h3>
+        <p>Descreva aqui o prêmio principal (ex: Pix, vale, produto, serviço...)</p>
+        <div class="premio-valor">R$ ???</div>
+      </div>
+
+      <!-- PRÊMIO 2 -->
+      <div class="premio-card">
+        <div class="premio-badge">2º PRÊMIO</div>
+        <div class="premio-icon">🥈</div>
+        <h3>Segundo Prêmio</h3>
+        <p>Descrição do prêmio</p>
+      </div>
+
+      <!-- PRÊMIO 3 -->
+      <div class="premio-card">
+        <div class="premio-badge">3º PRÊMIO</div>
+        <div class="premio-icon">🥉</div>
+        <h3>Terceiro Prêmio</h3>
+        <p>Descrição do prêmio</p>
+      </div>
+
+    </div>
+
+    <!-- INFO EXTRA -->
+    <div class="premio-info">
+      <p>📅 O sorteio será realizado após a venda de todos os números pelo próximo sorteio da loteria federal.</p>
+      <p>🎥 Transparência total — sorteio será divulgado.</p>
+    </div>
+
+  </div>
+</section>
+<!-- ══ RIFA ══ -->
+<section id="rifa">
+  <div class="container">
+    <p class="section-label">Rifa Solidária</p>
+    <h2 class="section-title">ESCOLHA<br>SEU NÚMERO</h2>
+    <p class="section-sub">Cada número custa <strong style="color:var(--accent)">R$15,00</strong>. Após escolher, entre em contato para confirmar o pagamento via Pix.</p>
+
+    
+
+    <div class="rifa-controls">
+      <button class="filter-btn active" onclick="filtrar('todos')">Todos</button>
+      <button class="filter-btn" onclick="filtrar('livre')">Disponíveis</button>
+      <button class="filter-btn" onclick="filtrar('vendido')">Vendidos</button>
+      <input class="search-box" type="text" placeholder="🔍 Buscar número ou nome..." oninput="buscar(this.value)">
+    </div>
+
+    <div id="numbers-container">
+      <div class="loading-msg">
+        <div class="loading-spinner"></div>
+        <p>Carregando números...</p>
+      </div>
+    </div>
+
+    <div class="rifa-summary">
+      <div class="summary-chip">
+        <span class="dot" style="background:var(--green)"></span>
+        <span id="count-livre">— disponíveis</span>
+      </div>
+      
+	  
+      <div class="summary-chip">
+        <span class="dot" style="background:var(--accent)"></span>
+        <span id="count-vendido">— vendidos</span>
+      </div>
+      <div class="summary-chip">
+        <span class="dot" style="background:var(--amber)"></span>
+        <span id="count-valor">R$ 0 arrecadados</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROGRESSO ══ -->
+<section id="progresso">
+  <div class="container">
+    <p class="section-label">Meta da Arrecadação</p>
+    <h2 class="section-title">CADA REAL<br>FAZ A DIFERENÇA</h2>
+
+    <div class="progress-wrapper">
+      <div class="progress-header">
+        <div>
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Já arrecadamos</div>
+          <div class="progress-amount" id="valor-arrecadado">R$ 0</div>
+        </div>
+        <div class="progress-meta">
+          Meta: <strong>R$ 1.500</strong><br>
+          <span id="percent-text">0% concluído</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-ticks">
+        <span>R$ 0</span>
+        <span>R$ 375</span>
+        <span>R$ 750</span>
+        <span>R$ 1.125</span>
+        <span>R$ 1.500</span>
+      </div>
+
+      <div class="progress-goal">
+        <div class="goal-item">
+          <div class="label">Valor da rifa</div>
+          <div class="value">R$ 1.500</div>
+          <div class="detail">100 números × R$ 15</div>
+        </div>
+        <div class="goal-item">
+          <div class="label">Destino dos recursos</div>
+          <div class="value">CF-L1</div>
+          <div class="detail">Curso</div>
+        </div>
+        <div class="goal-item">
+          <div class="label">Números restantes</div>
+          <div class="value" id="restantes-goal">100</div>
+          <div class="detail">ainda disponíveis</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIX -->
+    <div class="pix-section">
+      <span class="pix-icon">💚</span>
+      <div class="pix-title">PREFERE APENAS AJUDAR?</div>
+      <p class="pix-desc">Não precisa participar do sorteio para apoiar a Bárbara. Qualquer contribuição via Pix é muito bem-vinda e vai diretamente para o curso!</p>
+      <div class="pix-key-box" onclick="copiarPix()">
+        <span class="pix-key-text" id="pix-chave">SEU-PIX-AQUI</span>
+        <button class="pix-copy-btn">Copiar</button>
+        <span class="pix-copied" id="pix-copied">Copiado! ✓</span>
+      </div>
+      <p style="color:var(--muted);font-size:12px;margin-top:24px">Informe o nome no Pix para confirmarmos o recebimento 💛</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>
+  Cada número é um passo mais perto do sonho 💪<br>
+  Obrigado por apoiar a jornada da <strong>Bárbara</strong> rumo ao CF-L1 · <span id="footer-ano"></span>
+</p></footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-backdrop" id="modal" onclick="fecharModal(event)">
+  <div class="modal">
+    <div class="modal-num" id="modal-num">00</div>
+    <h3 id="modal-status">NÚMERO DISPONÍVEL</h3>
+    <p id="modal-msg">Este número está disponível! Entre em contato para reservar e realizar o pagamento de R$15,00 via Pix.</p>
+    <button class="modal-close" onclick="fecharModal()">Fechar</button>
+  </div>
+</div>
+
+<script>
+setInterval(() => {
+  carregarDados();
+}, 10000); // atualiza a cada 10s
+// ══════════════════════════════════════════
+
+
+// ══════════════════════════════════════════
+//  CONFIGURAÇÃO — edite aqui
+// ══════════════════════════════════════════
+const SHEET_ID    = '1y9liEG1HI4Ajrdo-gdZqHouarK-nL2l9Akas27u9brA';          // ID da planilha (URL: /d/<ID>/edit)
+const SHEET_NAME  = 'Rifa';                        // Nome da aba
+const SHEET_RANGE = 'A2:B101';                     // Intervalo: coluna A = número, B = nome
+const PIX_CHAVE   = 'SEU-PIX-AQUI';               // Chave Pix da Bárbara
+
+// ══════════════════════════════════════════
+//  DADOS DE DEMONSTRAÇÃO (usados se a
+//  planilha não estiver configurada)
+// ══════════════════════════════════════════
+function gerarDemoData() {
+  const demos = [2,5,7,13,21,34,42,55,63,77,81,90,4,19,38,51,66,72,88,95];
+  const nomes = ['Ana Paula','Carlos R.','Fernanda S.','João M.','Luana T.','Marcos A.','Patricia O.','Rafael B.','Simone C.','Thiago L.'];
+  return Array.from({length:100},(_,i)=>{
+    const num = String(i).padStart(2,'0');
+    const idx = demos.indexOf(i);
+    return { num, nome: idx>=0 ? nomes[idx % nomes.length] : '', livre: idx<0 };
+  });
+}
+
+// ══════════════════════════════════════════
+//  ESTADO GLOBAL
+// ══════════════════════════════════════════
+let todosNumeros = [];
+let filtroAtivo  = 'todos';
+let buscaTermo   = '';
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pix-chave').textContent = PIX_CHAVE;
+  document.getElementById('footer-ano').textContent = new Date().getFullYear();
+  carregarDados();
+});
+
+async function carregarDados() {
+  // Se o Sheet ID não foi configurado, usa demo
+  if (SHEET_ID === 'SEU_SHEET_ID_AQUI') {
+    todosNumeros = gerarDemoData();
+    renderizar();
+    return;
+  }
+
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=${SHEET_RANGE}&_=${Date.now()}`;
+	const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47, text.length - 2));
+    const rows = json.table.rows;
+
+    todosNumeros = rows.map((row) => {
+		  const numeroRaw = row.c[0];
+		  const nomeRaw   = row.c[1];
+
+		  const num = numeroRaw && numeroRaw.v !== null
+			? String(numeroRaw.v).padStart(2, '0')
+			: '';
+
+		  const nome = nomeRaw && nomeRaw.v
+			? String(nomeRaw.v).trim()
+			: '';
+
+		  return {
+			num,
+			nome,
+			livre: nome === ''
+		  };
+		});
+  } catch(e) {
+    console.warn('Planilha não carregada, usando demo.', e);
+    todosNumeros = gerarDemoData();
+  }
+
+  renderizar();
+}
+
+// ══════════════════════════════════════════
+//  RENDERIZAR
+// ══════════════════════════════════════════
+function renderizar() {
+  const container = document.getElementById('numbers-container');
+  const vendidos   = todosNumeros.filter(n => !n.livre);
+  const livres     = todosNumeros.filter(n => n.livre);
+  const arrecadado = vendidos.length * 15;
+  const pct        = Math.min(100, Math.round((arrecadado / 1500) * 100));
+
+  // Stats hero
+  document.getElementById('stat-vendidos').textContent = vendidos.length;
+
+  // Summary chips
+  document.getElementById('count-livre').textContent   = `${livres.length} disponíveis`;
+  document.getElementById('count-vendido').textContent  = `${vendidos.length} vendidos`;
+  document.getElementById('count-valor').textContent    = `R$ ${arrecadado} arrecadados`;
+  document.getElementById('restantes-goal').textContent = livres.length;
+
+  // Progress bar
+  document.getElementById('valor-arrecadado').textContent = `R$ ${arrecadado}`;
+  document.getElementById('percent-text').textContent      = `${pct}% concluído`;
+  setTimeout(() => {
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }, 300);
+
+  // Grid
+  let lista = todosNumeros;
+  if (filtroAtivo === 'livre')   lista = todosNumeros.filter(n => n.livre);
+  if (filtroAtivo === 'vendido') lista = todosNumeros.filter(n => !n.livre);
+  if (buscaTermo) {
+    const t = buscaTermo.toLowerCase();
+    lista = lista.filter(n => n.num.includes(t) || n.nome.toLowerCase().includes(t));
+  }
+
+  if (!lista.length) {
+    container.innerHTML = '<div class="loading-msg"><p>Nenhum número encontrado.</p></div>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'numbers-grid';
+
+  lista.forEach(n => {
+    const card = document.createElement('div');
+    card.className = `num-card ${n.livre ? 'livre' : 'vendido'}`;
+    card.innerHTML = `
+      <span class="num-num">${n.num}</span>
+      <span class="num-name">${n.nome || '—'}</span>
+      <span class="num-tag">${n.livre ? 'Livre' : 'Vendido'}</span>
+    `;
+    if (n.livre) card.addEventListener('click', () => abrirModal(n));
+    grid.appendChild(card);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+// ══════════════════════════════════════════
+//  FILTROS
+// ══════════════════════════════════════════
+function filtrar(tipo) {
+  filtroAtivo = tipo;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderizar();
+}
+
+function buscar(val) {
+  buscaTermo = val;
+  renderizar();
+}
+
+// ══════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════
+function abrirModal(n) {
+  document.getElementById('modal-num').textContent  = n.num;
+  document.getElementById('modal-status').textContent = n.livre ? 'NÚMERO DISPONÍVEL! 🎉' : 'JÁ RESERVADO';
+  document.getElementById('modal-msg').textContent = n.livre
+    ? `O número ${n.num} está disponível! Entre em contato com a Bárbara para reservar e realizar o pagamento de R$ 15,00 via Pix. Chave: ${PIX_CHAVE}`
+    : `Este número já foi reservado por ${n.nome}.`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function fecharModal(e) {
+  if (!e || e.target === document.getElementById('modal') || e.type !== 'click') {
+    document.getElementById('modal').classList.remove('open');
+  }
+}
+
+// ══════════════════════════════════════════
+//  PIX
+// ══════════════════════════════════════════
+function copiarPix() {
+  const chave = document.getElementById('pix-chave').textContent;
+  navigator.clipboard.writeText(chave).then(() => {
+    const el = document.getElementById('pix-copied');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  });
+}
+</script>
+</body>
+</html>
