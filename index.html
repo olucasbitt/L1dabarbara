@@ -1009,6 +1009,16 @@
   flex-direction: column;
   gap: 6px;
 }
+
+.num-card.selected {
+  border-color: #00d68f;
+  box-shadow: 0 0 20px rgba(0,214,143,0.3);
+}
+
+.num-card.selected .num-tag {
+  background: #00d68f;
+  color: #000;
+}
 </style>
 </head>
 <body>
@@ -1329,31 +1339,54 @@
   </div>
 </div>
 
+<div id="barra-selecao" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 12px 20px;
+  display: none;
+  align-items: center;
+  gap: 16px;
+  z-index: 999;
+">
+  <span id="qtd-selecionados">0 números</span>
+
+  <button onclick="enviarWhats()" style="
+    background: linear-gradient(135deg, #ff2d6b, #ff7a45);
+    border: none;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+  ">
+    Reservar via WhatsApp
+  </button>
+</div>
+
 <script>
-setInterval(() => {
-  carregarDados();
-}, 10000); // atualiza a cada 10s
 // ══════════════════════════════════════════
-
-
+// CONFIG
 // ══════════════════════════════════════════
-//  CONFIGURAÇÃO — edite aqui
-// ══════════════════════════════════════════
-const SHEET_ID    = '1y9liEG1HI4Ajrdo-gdZqHouarK-nL2l9Akas27u9brA';          // ID da planilha (URL: /d/<ID>/edit)
-const SHEET_NAME  = 'Rifa';                        // Nome da aba
-const SHEET_RANGE = 'A2:B351';                     // Intervalo: coluna A = número, B = nome
-const PIX_CHAVE   = 'barbarabierhbl11@gmail.com';               // Chave Pix da Bárbara
-
+const SHEET_ID    = '1y9liEG1HI4Ajrdo-gdZqHouarK-nL2l9Akas27u9brA';
+const SHEET_NAME  = 'Rifa';
+const SHEET_RANGE = 'A2:B351';
+const PIX_CHAVE   = 'barbarabierhbl11@gmail.com';
+const WHATSAPP_NUMERO = '555191457161'; // ← ALTERA AQUI
 
 // ══════════════════════════════════════════
-//  ESTADO GLOBAL
+// ESTADO
 // ══════════════════════════════════════════
 let todosNumeros = [];
 let filtroAtivo  = 'todos';
 let buscaTermo   = '';
+let selecionados = [];
 
 // ══════════════════════════════════════════
-//  INIT
+// INIT
 // ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pix-chave').textContent = PIX_CHAVE;
@@ -1361,85 +1394,68 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarDados();
 });
 
-async function carregarDados() {
-  // Se o Sheet ID não foi configurado, usa demo
-  if (SHEET_ID === 'SEU_SHEET_ID_AQUI') {
-    todosNumeros = gerarDemoData();
-    renderizar();
-    return;
-  }
+setInterval(() => {
+  carregarDados();
+}, 30000);
 
+// ══════════════════════════════════════════
+// CARREGAR DADOS
+// ══════════════════════════════════════════
+async function carregarDados() {
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=${SHEET_RANGE}&_=${Date.now()}`;
-	const res = await fetch(url);
+    const res = await fetch(url);
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
     const rows = json.table.rows;
 
     todosNumeros = rows.map((row) => {
-		  const numeroRaw = row.c[0];
-		  const nomeRaw   = row.c[1];
+      const num = row.c[0]?.v ? String(row.c[0].v).padStart(2, '0') : '';
+      const nome = row.c[1]?.v ? String(row.c[1].v).trim() : '';
 
-		  const num = numeroRaw && numeroRaw.v !== null
-			? String(numeroRaw.v).padStart(2, '0')
-			: '';
+      return {
+        num,
+        nome,
+        livre: nome === ''
+      };
+    });
 
-		  const nome = nomeRaw && nomeRaw.v
-			? String(nomeRaw.v).trim()
-			: '';
-
-		  return {
-			num,
-			nome,
-			livre: nome === ''
-		  };
-		});
   } catch(e) {
-    console.warn('Planilha não carregada, usando demo.', e);
-    
+    console.warn('Erro ao carregar planilha', e);
   }
 
   renderizar();
 }
 
 // ══════════════════════════════════════════
-//  RENDERIZAR
+// RENDER
 // ══════════════════════════════════════════
 function renderizar() {
   const container = document.getElementById('numbers-container');
+
   const vendidos   = todosNumeros.filter(n => !n.livre);
   const livres     = todosNumeros.filter(n => n.livre);
   const arrecadado = vendidos.length * 15;
-  const pct        = Math.min(350, Math.round((arrecadado / 5250) * 350));
+  const pct        = Math.round((arrecadado / 5250) * 100);
 
-  // Stats hero
   document.getElementById('stat-vendidos').textContent = vendidos.length;
-
-  // Summary chips
   document.getElementById('count-livre').textContent   = `${livres.length} disponíveis`;
-  document.getElementById('count-vendido').textContent  = `${vendidos.length} vendidos`;
-  document.getElementById('count-valor').textContent    = `R$ ${arrecadado} arrecadados`;
+  document.getElementById('count-vendido').textContent = `${vendidos.length} vendidos`;
+  document.getElementById('count-valor').textContent   = `R$ ${arrecadado}`;
   document.getElementById('restantes-goal').textContent = livres.length;
 
-  // Progress bar
   document.getElementById('valor-arrecadado').textContent = `R$ ${arrecadado}`;
-  document.getElementById('percent-text').textContent      = `${pct}% concluído`;
-  setTimeout(() => {
-    document.getElementById('progress-fill').style.width = pct + '%';
-  }, 300);
+  document.getElementById('percent-text').textContent = `${pct}% concluído`;
+  document.getElementById('progress-fill').style.width = pct + '%';
 
-  // Grid
   let lista = todosNumeros;
-  if (filtroAtivo === 'livre')   lista = todosNumeros.filter(n => n.livre);
-  if (filtroAtivo === 'vendido') lista = todosNumeros.filter(n => !n.livre);
+
+  if (filtroAtivo === 'livre')   lista = lista.filter(n => n.livre);
+  if (filtroAtivo === 'vendido') lista = lista.filter(n => !n.livre);
+
   if (buscaTermo) {
     const t = buscaTermo.toLowerCase();
     lista = lista.filter(n => n.num.includes(t) || n.nome.toLowerCase().includes(t));
-  }
-
-  if (!lista.length) {
-    container.innerHTML = '<div class="loading-msg"><p>Nenhum número encontrado.</p></div>';
-    return;
   }
 
   const grid = document.createElement('div');
@@ -1448,21 +1464,79 @@ function renderizar() {
   lista.forEach(n => {
     const card = document.createElement('div');
     card.className = `num-card ${n.livre ? 'livre' : 'vendido'}`;
+
+    if (selecionados.find(x => x.num === n.num)) {
+      card.classList.add('selected');
+    }
+
     card.innerHTML = `
       <span class="num-num">${n.num}</span>
       <span class="num-name">${n.nome || '—'}</span>
       <span class="num-tag">${n.livre ? 'Livre' : 'Vendido'}</span>
     `;
-    if (n.livre) card.addEventListener('click', () => abrirModal(n));
+
+    if (n.livre) {
+      card.addEventListener('click', () => toggleNumero(n, card));
+    }
+
     grid.appendChild(card);
   });
 
   container.innerHTML = '';
   container.appendChild(grid);
+
+  atualizarBarraSelecao();
 }
 
 // ══════════════════════════════════════════
-//  FILTROS
+// SELEÇÃO
+// ══════════════════════════════════════════
+function toggleNumero(n, card) {
+  const index = selecionados.findIndex(x => x.num === n.num);
+
+  if (index > -1) {
+    selecionados.splice(index, 1);
+    card.classList.remove('selected');
+  } else {
+    selecionados.push(n);
+    card.classList.add('selected');
+  }
+
+  atualizarBarraSelecao();
+}
+
+function atualizarBarraSelecao() {
+  const barra = document.getElementById('barra-selecao');
+  const qtd = selecionados.length;
+
+  if (qtd > 0) {
+    barra.style.display = 'flex';
+    document.getElementById('qtd-selecionados').textContent =
+      `${qtd} número${qtd > 1 ? 's' : ''} selecionado${qtd > 1 ? 's' : 's'}`;
+  } else {
+    barra.style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════
+// WHATSAPP
+// ══════════════════════════════════════════
+function enviarWhats() {
+  if (!selecionados.length) return;
+
+  const numeros = selecionados.map(n => n.num).join(', ');
+
+  const mensagem =
+    `Oi! Quero reservar esses números da rifa da Bárbara:\n\n${numeros}`;
+
+  window.open(
+    `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`,
+    '_blank'
+  );
+}
+
+// ══════════════════════════════════════════
+// FILTROS
 // ══════════════════════════════════════════
 function filtrar(tipo) {
   filtroAtivo = tipo;
@@ -1477,33 +1551,11 @@ function buscar(val) {
 }
 
 // ══════════════════════════════════════════
-//  MODAL
-// ══════════════════════════════════════════
-function abrirModal(n) {
-  document.getElementById('modal-num').textContent  = n.num;
-  document.getElementById('modal-status').textContent = n.livre ? 'NÚMERO DISPONÍVEL! 🎉' : 'JÁ RESERVADO';
-  document.getElementById('modal-msg').textContent = n.livre
-    ? `O número ${n.num} está disponível! Entre em contato com a Bárbara para reservar e realizar o pagamento de R$ 15,00 via Pix. Chave: ${PIX_CHAVE}`
-    : `Este número já foi reservado por ${n.nome}.`;
-  document.getElementById('modal').classList.add('open');
-}
-
-function fecharModal(e) {
-  if (!e || e.target === document.getElementById('modal') || e.type !== 'click') {
-    document.getElementById('modal').classList.remove('open');
-  }
-}
-
-// ══════════════════════════════════════════
-//  PIX
+// PIX
 // ══════════════════════════════════════════
 function copiarPix() {
   const chave = document.getElementById('pix-chave').textContent;
-  navigator.clipboard.writeText(chave).then(() => {
-    const el = document.getElementById('pix-copied');
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 2000);
-  });
+  navigator.clipboard.writeText(chave);
 }
 </script>
 </body>
