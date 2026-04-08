@@ -7,38 +7,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #0B0B0B;
-    --surface:  #111111;
-    --surface2: #1A1A1A;
-    --surface3: #222222;
+    /* ── Backgrounds ── */
+    --bg:       #080810;
+    --surface:  #0f0f1c;
+    --surface2: #161628;
+    --surface3: #1e1e35;
 
-    --border:       rgba(255,255,255,0.08);
-    --border-hover: rgba(47,128,237,0.45);
+    /* ── Borders ── */
+    --border:      rgba(140,130,255,0.1);
+    --border-hover: rgba(255,80,120,0.35);
 
-    --accent:    #2F80ED;
-    --accent-dim: rgba(47,128,237,0.15);
+    /* ── Primary accent: vivid crimson-rose ── */
+    --accent:    #ff2d6b;
+    --accent-dim: rgba(255f,45,107,0.15);
 
-    --violet:    #56A3FF;
-    --violet-dim: rgba(86,163,255,0.12);
+    /* ── Secondary accent: electric violet ── */
+    --violet:    #9b5cff;
+    --violet-dim: rgba(155,92,255,0.12);
 
-    --amber:    #FFFFFF;
-    --amber-dim: rgba(255,255,255,0.08);
+    /* ── Highlight: warm amber ── */
+    --amber:    #ffb830;
+    --amber-dim: rgba(255,184,48,0.12);
 
-    --mint:     #56A3FF;
-    --mint-dim:  rgba(86,163,255,0.1);
+    /* ── Success / Pix: mint green ── */
+    --mint:     #00d68f;
+    --mint-dim:  rgba(0,214,143,0.1);
 
-    --text:  #FFFFFF;
-    --muted: #7A7A7A;
-    --faint: #333333;
+    /* ── Text ── */
+    --text:  #eeeef8;
+    --muted: #7070a0;
+    --faint: #3a3a60;
 
     --radius: 12px;
 
-    --grad-fire:   linear-gradient(135deg, #2F80ED 0%, #56A3FF 100%);
-    --grad-cosmic: linear-gradient(135deg, #1C4ED8 0%, #56A3FF 100%);
-    --grad-gold:   linear-gradient(135deg, #FFFFFF 0%, #BFBFBF 100%);
+    /* ── Gradient shortcuts ── */
+    --grad-fire:   linear-gradient(135deg, #ff2d6b 0%, #ff7a45 100%);
+    --grad-cosmic: linear-gradient(135deg, #9b5cff 0%, #ff2d6b 100%);
+    --grad-gold:   linear-gradient(135deg, #ffb830 0%, #ff7a45 100%);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   html { scroll-behavior: smooth; }
 
   body {
@@ -49,6 +58,7 @@
     overflow-x: hidden;
   }
 
+  /* ── NOISE TEXTURE ── */
   body::before {
     content: '';
     position: fixed;
@@ -76,9 +86,9 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 55% at 50% -5%,  rgba(47,128,237,0.22)  0%, transparent 65%),
-      radial-gradient(ellipse 50% 45% at 10%  60%, rgba(28,78,216,0.14)   0%, transparent 60%),
-      radial-gradient(ellipse 40% 35% at 90%  80%, rgba(86,163,255,0.08)  0%, transparent 55%),
+      radial-gradient(ellipse 70% 55% at 50% -5%,  rgba(255,45,107,0.22)  0%, transparent 65%),
+      radial-gradient(ellipse 50% 45% at 10%  60%, rgba(155,92,255,0.14)  0%, transparent 60%),
+      radial-gradient(ellipse 40% 35% at 90%  80%, rgba(255,184,48,0.08)  0%, transparent 55%),
       var(--bg);
     z-index: 0;
   }
@@ -87,8 +97,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(47,128,237,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(28,78,216,0.05) 1px, transparent 1px);
+      linear-gradient(rgba(155,92,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,107,0.05) 1px, transparent 1px);
     background-size: 60px 60px;
     z-index: 0;
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
@@ -100,26 +110,20 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(47,128,237,0.1);
-    border: 1px solid rgba(47,128,237,0.3);
+    background: rgba(255,45,107,0.1);
+    border: 1px solid rgba(255,45,107,0.28);
     border-radius: 100px;
     padding: 6px 16px;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #56A3FF;
+    color: #ff7aaa;
     margin-bottom: 28px;
     animation: fadeDown 0.6s ease both;
   }
 
-  .badge span {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 1.5s ease infinite;
-  }
+  .badge span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 1.5s ease infinite; }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
@@ -140,7 +144,7 @@
     font-size: clamp(56px, 12vw, 120px);
     line-height: 0.92;
     letter-spacing: 0.02em;
-    background: linear-gradient(135deg, #fff 0%, #BFBFBF 45%, #56A3FF 100%);
+    background: linear-gradient(135deg, #fff 0%, #ffb0cc 45%, var(--accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -191,8 +195,8 @@
   }
 
   .stat-card:hover {
-    border-color: rgba(47,128,237,0.4);
-    box-shadow: 0 0 24px rgba(47,128,237,0.1);
+    border-color: rgba(255,45,107,0.35);
+    box-shadow: 0 0 24px rgba(255,45,107,0.08);
   }
 
   .stat-num {
@@ -234,6 +238,7 @@
 
   /* ── SECTION SHARED ── */
   section { padding: 80px 24px; position: relative; }
+
   .container { max-width: 1100px; margin: 0 auto; }
 
   .section-label {
@@ -264,7 +269,7 @@
     margin-bottom: 48px;
   }
 
-  /* ── ABOUT ── */
+  /* ── ABOUT CROSSFIT ── */
   .about-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -282,11 +287,15 @@
 
   .about-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(47,128,237,0.3);
-    box-shadow: 0 8px 32px rgba(47,128,237,0.08);
+    border-color: rgba(155,92,255,0.3);
+    box-shadow: 0 8px 32px rgba(155,92,255,0.08);
   }
 
-  .about-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+  .about-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
 
   .about-card h3 {
     font-family: 'Bebas Neue', sans-serif;
@@ -328,7 +337,7 @@
     background: var(--grad-fire);
     border-color: transparent;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(47,128,237,0.35);
+    box-shadow: 0 4px 16px rgba(255,45,107,0.3);
   }
 
   .search-box {
@@ -346,10 +355,9 @@
   }
 
   .search-box:focus {
-    border-color: rgba(47,128,237,0.5);
-    box-shadow: 0 0 0 3px rgba(47,128,237,0.1);
+    border-color: rgba(155,92,255,0.4);
+    box-shadow: 0 0 0 3px rgba(155,92,255,0.08);
   }
-
   .search-box::placeholder { color: var(--muted); }
 
   .loading-msg {
@@ -361,7 +369,8 @@
 
   .loading-spinner {
     display: inline-block;
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     border: 3px solid var(--border);
     border-top-color: var(--accent);
     border-right-color: var(--violet);
@@ -399,50 +408,21 @@
     transition: opacity 0.2s;
   }
 
-  .num-card:hover { border-color: rgba(47,128,237,0.45); box-shadow: 0 4px 20px rgba(47,128,237,0.14); }
+  .num-card:hover { border-color: rgba(155,92,255,0.4); box-shadow: 0 4px 20px rgba(155,92,255,0.12); }
   .num-card:hover::before { opacity: 0.07; }
 
   .num-card.vendido {
-  background: rgba(255,255,255,0.03);
-  border-color: rgba(255,255,255,0.08);
-  opacity: 0.6;
-}
+    background: rgba(255,45,107,0.07);
+    border-color: rgba(255,45,107,0.2);
+    cursor: default;
+  }
 
-.num-card.vendido .num-num {
-  color: #777;
-  text-shadow: none;
-  background: none;
-  -webkit-text-fill-color: initial;
-}
+  .num-card.vendido:hover { box-shadow: none; border-color: rgba(255,45,107,0.2); }
+  .num-card.vendido::before { display: none; }
+  .num-card.vendido .num-num { background: var(--grad-fire); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .num-card.vendido .num-tag { background: var(--accent); color: #fff; }
 
-.num-card.vendido .num-tag {
-  background: rgba(255,255,255,0.08);
-  color: #aaa;
-}
-  .num-card.livre {
-  background: rgba(34,197,94,0.08); /* verde suave */
-  border-color: rgba(34,197,94,0.35);
-}
-
-.num-card.livre {
-  background: var(--surface2);
-  border-color: rgba(47,128,237,0.25);
-}
-
-.num-card.livre:hover {
-  border-color: #56A3FF;
-  box-shadow: 0 4px 20px rgba(47,128,237,0.25);
-}
-
-.num-card.livre .num-num {
-  color: #FFFFFF; /* volta ao branco */
-}
-
-.num-card.livre .num-tag {
-  background: rgba(47,128,237,0.15);
-  color: #56A3FF;
-  border: 1px solid rgba(47,128,237,0.35);
-}
+  .num-card.livre .num-tag { background: rgba(0,214,143,0.12); color: var(--mint); border: 1px solid rgba(0,214,143,0.22); }
 
   .num-num {
     font-family: 'Bebas Neue', sans-serif;
@@ -498,9 +478,11 @@
     font-size: 13px;
   }
 
-  .summary-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .summary-chip .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
 
-  /* ── PROGRESS ── */
+  /* ── PROGRESS SECTION ── */
   #progresso { background: var(--bg); }
 
   .progress-wrapper {
@@ -517,7 +499,7 @@
     position: absolute;
     top: -80px; right: -80px;
     width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(47,128,237,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(155,92,255,0.12) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -526,7 +508,7 @@
     position: absolute;
     bottom: -60px; left: -60px;
     width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(28,78,216,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,45,107,0.09) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -564,7 +546,7 @@
   .progress-bar-fill {
     height: 100%;
     border-radius: 100px;
-    background: linear-gradient(90deg, #1C4ED8 0%, #2F80ED 50%, #56A3FF 100%);
+    background: linear-gradient(90deg, var(--accent) 0%, var(--violet) 50%, var(--amber) 100%);
     transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
     position: relative;
     overflow: hidden;
@@ -574,7 +556,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
     animation: shimmer 2s ease infinite;
   }
 
@@ -613,8 +595,8 @@
   /* ── PIX ── */
   .pix-section {
     margin-top: 48px;
-    background: linear-gradient(135deg, rgba(47,128,237,0.06) 0%, rgba(28,78,216,0.02) 100%);
-    border: 1px solid rgba(47,128,237,0.2);
+    background: linear-gradient(135deg, rgba(0,214,143,0.06) 0%, rgba(0,180,120,0.02) 100%);
+    border: 1px solid rgba(0,214,143,0.18);
     border-radius: 20px;
     padding: 40px;
     text-align: center;
@@ -628,11 +610,16 @@
     top: -40px; left: 50%;
     transform: translateX(-50%);
     width: 200px; height: 120px;
-    background: radial-gradient(ellipse, rgba(47,128,237,0.1) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(0,214,143,0.1) 0%, transparent 70%);
     pointer-events: none;
   }
 
-  .pix-icon { font-size: 48px; margin-bottom: 16px; display: block; position: relative; }
+  .pix-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+    position: relative;
+  }
 
   .pix-title {
     font-family: 'Bebas Neue', sans-serif;
@@ -650,7 +637,7 @@
     align-items: center;
     gap: 12px;
     background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(47,128,237,0.28);
+    border: 1px solid rgba(0,214,143,0.25);
     border-radius: var(--radius);
     padding: 14px 24px;
     cursor: pointer;
@@ -659,9 +646,9 @@
   }
 
   .pix-key-box:hover {
-    border-color: rgba(47,128,237,0.6);
-    background: rgba(47,128,237,0.07);
-    box-shadow: 0 0 24px rgba(47,128,237,0.12);
+    border-color: rgba(0,214,143,0.55);
+    background: rgba(0,214,143,0.06);
+    box-shadow: 0 0 24px rgba(0,214,143,0.1);
   }
 
   .pix-key-text {
@@ -672,7 +659,7 @@
   }
 
   .pix-copy-btn {
-    background: rgba(47,128,237,0.14);
+    background: rgba(0,214,143,0.14);
     border: none;
     border-radius: 6px;
     padding: 4px 10px;
@@ -685,15 +672,15 @@
     transition: background 0.2s;
   }
 
-  .pix-copy-btn:hover { background: rgba(47,128,237,0.28); }
+  .pix-copy-btn:hover { background: rgba(0,214,143,0.26); }
 
   .pix-copied {
     position: absolute;
     bottom: -32px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--accent);
-    color: #fff;
+    background: var(--mint);
+    color: #000;
     font-size: 11px;
     font-weight: 600;
     border-radius: 4px;
@@ -723,13 +710,13 @@
 
   /* ── CONFIG BANNER ── */
   .config-banner {
-    background: rgba(47,128,237,0.07);
-    border: 1px solid rgba(47,128,237,0.2);
+    background: rgba(255,184,48,0.07);
+    border: 1px solid rgba(255,184,48,0.18);
     border-radius: var(--radius);
     padding: 16px 20px;
     margin-bottom: 24px;
     font-size: 13px;
-    color: var(--mint);
+    color: var(--amber);
     display: flex;
     gap: 10px;
     align-items: flex-start;
@@ -741,7 +728,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.80);
+    background: rgba(0,0,0,0.75);
     backdrop-filter: blur(8px);
     z-index: 500;
     align-items: center;
@@ -753,14 +740,14 @@
 
   .modal {
     background: var(--surface2);
-    border: 1px solid rgba(47,128,237,0.22);
+    border: 1px solid rgba(155,92,255,0.2);
     border-radius: 20px;
     padding: 36px;
     max-width: 420px;
     width: 100%;
     text-align: center;
     animation: modalIn 0.3s ease;
-    box-shadow: 0 24px 80px rgba(47,128,237,0.15);
+    box-shadow: 0 24px 80px rgba(155,92,255,0.15);
   }
 
   @keyframes modalIn {
@@ -805,9 +792,9 @@
   }
 
   .modal-close:hover {
-    border-color: rgba(47,128,237,0.5);
+    border-color: rgba(255,45,107,0.4);
     color: var(--accent);
-    box-shadow: 0 0 16px rgba(47,128,237,0.12);
+    box-shadow: 0 0 16px rgba(255,45,107,0.1);
   }
 
   @media (max-width: 600px) {
@@ -830,7 +817,7 @@
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    background: conic-gradient(#2F80ED, #56A3FF, #ffffff, #2F80ED);
+    background: conic-gradient(var(--accent), var(--violet), var(--amber), var(--accent));
     z-index: 0;
     animation: spin 4s linear infinite;
   }
@@ -864,18 +851,18 @@
 
   .hero-photo-label:hover .hero-photo-placeholder {
     color: var(--accent);
-    background: rgba(47,128,237,0.06);
+    background: rgba(255,45,107,0.05);
   }
 
   #hero-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    box-shadow:
-      0 0 20px rgba(47,128,237,0.45),
-      0 0 40px rgba(28,78,216,0.25);
-  }
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 20px rgba(255,45,107,0.4),
+    0 0 40px rgba(155,92,255,0.25);
+}
 
   /* ── COURSE COST BANNER ── */
   .course-cost-banner {
@@ -901,7 +888,7 @@
     transition: background 0.2s;
   }
 
-  .cost-item:hover { background: rgba(47,128,237,0.04); }
+  .cost-item:hover { background: rgba(255,45,107,0.04); }
 
   .cost-icon { font-size: 24px; flex-shrink: 0; }
 
@@ -938,90 +925,100 @@
     .cost-divider { width: 100%; height: 1px; }
     .cost-item { justify-content: center; }
   }
+  /* ── PREMIOS ── */
+#premios {
+  background: #0d0d18;
+}
 
-  /* ── PRÊMIOS ── */
-  #premios { background: #0d0d0d; }
+.premios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
 
-  .premios-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    margin-top: 40px;
-  }
+.premio-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  position: relative;
+  transition: all 0.25s;
+}
 
-  .premio-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
-    text-align: center;
-    position: relative;
-    transition: all 0.25s;
-  }
+.premio-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,45,107,0.3);
+  box-shadow: 0 10px 40px rgba(255,45,107,0.12);
+}
 
-  .premio-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(47,128,237,0.35);
-    box-shadow: 0 10px 40px rgba(47,128,237,0.14);
-  }
+/* destaque do principal */
+.premio-card.destaque {
+  border: 1px solid rgba(255,184,48,0.4);
+  box-shadow: 0 10px 40px rgba(255,184,48,0.15);
+}
 
-  .premio-card.destaque {
-    border: 1px solid rgba(255,255,255,0.25);
-    box-shadow: 0 10px 40px rgba(255,255,255,0.06);
-  }
+.premio-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--grad-gold);
+  color: #000;
+  font-weight: 600;
+}
 
-  .premio-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background: var(--grad-gold);
-    color: #000;
-    font-weight: 600;
-  }
+.premio-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
 
-  .premio-icon { font-size: 42px; margin-bottom: 12px; }
+.premio-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
 
-  .premio-card h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-  }
+.premio-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
 
-  .premio-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.premio-valor {
+  margin-top: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  background: var(--grad-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  .premio-valor {
-    margin-top: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    background: var(--grad-fire);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+/* info extra */
+.premio-info {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-  .premio-info {
-    margin-top: 32px;
-    text-align: center;
-    font-size: 13px;
-    color: var(--muted);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+.num-card.selected {
+  border-color: #00d68f;
+  box-shadow: 0 0 20px rgba(0,214,143,0.3);
+}
 
-  .num-card.selected {
-    border-color: #2F80ED;
-    box-shadow: 0 0 20px rgba(47,128,237,0.35);
-  }
-
-  .num-card.selected .num-tag {
-    background: #2F80ED;
-    color: #fff;
-  }
+.num-card.selected .num-tag {
+  background: #00d68f;
+  color: #000;
+}
 </style>
 </head>
 <body>
@@ -1033,8 +1030,12 @@
 
   <div class="badge"><span></span> Campanha ativa · Ajude a Bárbara</div>
 
+  <!-- Foto -->
   <div class="hero-photo-wrap">
     <label class="hero-photo-label" id="photo-label" title="Clique para adicionar a foto da Bárbara">
+     
+	 
+	  
       <img id="hero-photo" src="/images/barbara.jpg" alt="Bárbara">
     </label>
     <div class="hero-photo-ring"></div>
@@ -1042,17 +1043,20 @@
 
   <p class="hero-eyebrow">Rifa Solidária · CrossFit L1</p>
 
+  <!-- NOME MAIS IMPACTANTE -->
   <h1 class="hero-title">
     BÁRBARA <span style="color:var(--accent)">BIER</span>
   </h1>
 
   <p class="hero-subtitle">CF-L1 TRAINER CERTIFICATE</p>
 
+  <!-- TEXTO MAIS DIRETO E EMOCIONAL -->
   <p class="hero-desc">
     A Bárbara está dando um passo gigante para se tornar <strong>Coach de CrossFit</strong>.  
     Esse curso é a porta de entrada para transformar vidas — e você pode fazer parte disso.
   </p>
 
+  <!-- 🔥 CTA (ESSENCIAL) -->
   <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;">
     <a href="#rifa" style="
       background: var(--grad-fire);
@@ -1063,7 +1067,7 @@
       font-weight:600;
       letter-spacing:0.05em;
       text-decoration:none;
-      box-shadow:0 6px 24px rgba(47,128,237,0.4);
+      box-shadow:0 6px 24px rgba(255,45,107,0.4);
       transition:transform .2s;
     " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
       Escolher número
@@ -1077,11 +1081,12 @@
       font-size:14px;
       text-decoration:none;
       transition:all .2s;
-    " onmouseover="this.style.borderColor='#2F80ED'" onmouseout="this.style.borderColor='var(--border)'">
+    " onmouseover="this.style.borderColor='#ff2d6b'" onmouseout="this.style.borderColor='var(--border)'">
       Ver progresso
     </a>
   </div>
 
+  <!-- CUSTO -->
   <div class="course-cost-banner">
     <div class="cost-item">
       <span class="cost-icon">💸</span>
@@ -1091,7 +1096,13 @@
         <div class="cost-detail">US$ 1.000 · CrossFit oficial</div>
       </div>
     </div>
+
     <div class="cost-divider"></div>
+
+    
+
+    <div class="cost-divider"></div>
+
     <div class="cost-item">
       <span class="cost-icon">🔥</span>
       <div>
@@ -1102,6 +1113,7 @@
     </div>
   </div>
 
+  <!-- STATS -->
   <div class="hero-stats">
     <div class="stat-card">
       <div class="stat-num">350</div>
@@ -1111,15 +1123,24 @@
       <div class="stat-num">R$15</div>
       <div class="stat-label">Por número</div>
     </div>
+    
     <div class="stat-card">
       <div class="stat-num" id="stat-vendidos">—</div>
       <div class="stat-label">Vendidos</div>
     </div>
   </div>
 
-  <p style="margin-top:32px; font-size:13px; color:var(--muted); max-width:420px;">
+  <!-- FRASE FINAL (emocional) -->
+  <p style="
+    margin-top:32px;
+    font-size:13px;
+    color:var(--muted);
+    max-width:420px;
+  ">
     Cada número comprado é um passo mais perto do sonho dela 💪
   </p>
+
+   
 </section>
 
 <!-- ══ SOBRE O CF-L1 ══ -->
@@ -1148,15 +1169,18 @@
     </div>
   </div>
 </section>
-
-<!-- ══ PRÊMIOS ══ -->
 <section id="premios">
   <div class="container">
+
     <p class="section-label">Premiação</p>
     <h2 class="section-title">O QUE VOCÊ<br>PODE GANHAR</h2>
-    <p class="section-sub">Além de ajudar a Bárbara, você ainda concorre a prêmios especiais 🎁</p>
+    <p class="section-sub">
+      Além de ajudar a Bárbara, você ainda concorre a prêmios especiais 🎁
+    </p>
 
     <div class="premios-grid">
+
+      <!-- PRÊMIO 1 -->
       <div class="premio-card destaque">
         <div class="premio-badge">1º PRÊMIO</div>
         <div class="premio-icon">🥇</div>
@@ -1165,29 +1189,34 @@
         <div class="premio-valor">Viamão Crossfit</div>
       </div>
 
+      <!-- PRÊMIO 2 -->
       <div class="premio-card">
         <div class="premio-badge">2º PRÊMIO</div>
         <div class="premio-icon">🥈</div>
         <h3>Segundo Prêmio</h3>
         <p>Uma consulta com a nutricionista esportiva e CrossFit Level 1 Trainer</p>
-        <div class="premio-valor">Aline Mambac</div>
+		<div class="premio-valor">Aline Mambac</div>
       </div>
 
+      <!-- PRÊMIO 3 -->
       <div class="premio-card">
         <div class="premio-badge">3º PRÊMIO</div>
         <div class="premio-icon">🥉</div>
         <h3>Terceiro Prêmio</h3>
         <p>Um ensaio do seu treino com o fotográfo e CrossFit Level 2 Trainer</p>
-        <div class="premio-valor">Andherson Maeda</div>
+		<div class="premio-valor">Andherson Maeda</div>
       </div>
+	  
+	  
     </div>
 
+    <!-- INFO EXTRA -->
     <div class="premio-info">
       <p>🎥 Transparência total — sorteio será divulgado.</p>
     </div>
+
   </div>
 </section>
-
 <!-- ══ RIFA ══ -->
 <section id="rifa">
   <div class="container">
@@ -1195,6 +1224,8 @@
     <h2 class="section-title">ESCOLHA<br>SEUS NÚMEROS</h2>
     <p class="section-sub">Cada número custa <strong style="color:var(--accent)">R$15,00</strong>.
     <br>Selecione seus números e clique em <strong>Reservar pelo WhatsApp</strong> para finalizar sua participação.</br></p>
+
+    
 
     <div class="rifa-controls">
       <button class="filter-btn active" onclick="filtrar('todos')">Todos</button>
@@ -1212,15 +1243,17 @@
 
     <div class="rifa-summary">
       <div class="summary-chip">
-        <span class="dot" style="background:#BFBFBF"></span>
+        <span class="dot" style="background:var(--green)"></span>
         <span id="count-livre">— disponíveis</span>
       </div>
+      
+	  
       <div class="summary-chip">
         <span class="dot" style="background:var(--accent)"></span>
         <span id="count-vendido">— vendidos</span>
       </div>
       <div class="summary-chip">
-        <span class="dot" style="background:#fff"></span>
+        <span class="dot" style="background:var(--amber)"></span>
         <span id="count-valor">R$ 0 arrecadados</span>
       </div>
     </div>
@@ -1277,7 +1310,7 @@
 
     <!-- PIX -->
     <div class="pix-section">
-      <span class="pix-icon">💙</span>
+      <span class="pix-icon">💚</span>
       <div class="pix-title">PREFERE APENAS AJUDAR?</div>
       <p class="pix-desc">Não precisa participar do sorteio para apoiar a Bárbara. Qualquer contribuição via Pix é muito bem-vinda e vai diretamente para o curso!</p>
       <div class="pix-key-box" onclick="copiarPix()">
@@ -1285,7 +1318,7 @@
         <button class="pix-copy-btn">Copiar</button>
         <span class="pix-copied" id="pix-copied">Copiado! ✓</span>
       </div>
-      <p style="color:var(--muted);font-size:12px;margin-top:24px">Informe o nome no Pix para confirmarmos o recebimento 🤍</p>
+      <p style="color:var(--muted);font-size:12px;margin-top:24px">Informe o nome no Pix para confirmarmos o recebimento 💛</p>
     </div>
   </div>
 </section>
@@ -1293,10 +1326,9 @@
 <!-- ══ FOOTER ══ -->
 <footer>
   <p>
-    Cada número é um passo mais perto do sonho 💪<br>
-    Obrigado por apoiar a jornada da <strong>Bárbara</strong> rumo ao CF-L1 · <span id="footer-ano"></span>
-  </p>
-</footer>
+  Cada número é um passo mais perto do sonho 💪<br>
+  Obrigado por apoiar a jornada da <strong>Bárbara</strong> rumo ao CF-L1 · <span id="footer-ano"></span>
+</p></footer>
 
 <!-- ══ MODAL ══ -->
 <div class="modal-backdrop" id="modal" onclick="fecharModal(event)">
@@ -1325,40 +1357,51 @@
   <span id="qtd-selecionados">0 números</span>
 
   <button onclick="enviarWhats()" style="
-    background: linear-gradient(135deg, #2F80ED, #56A3FF);
+    background: linear-gradient(135deg, #ff2d6b, #ff7a45);
     border: none;
     color: #fff;
     padding: 10px 18px;
     border-radius: 100px;
     cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
   ">
     Reservar via WhatsApp
   </button>
 </div>
 
 <script>
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
 const SHEET_ID    = '1y9liEG1HI4Ajrdo-gdZqHouarK-nL2l9Akas27u9brA';
 const SHEET_NAME  = 'Rifa';
 const SHEET_RANGE = 'A2:B351';
 const PIX_CHAVE   = 'barbarabierhbl11@gmail.com';
-const WHATSAPP_NUMERO = '555191457161';
+const WHATSAPP_NUMERO = '555191457161'; // ← ALTERA AQUI
 
+// ══════════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════════
 let todosNumeros = [];
 let filtroAtivo  = 'todos';
 let buscaTermo   = '';
 let selecionados = [];
 
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pix-chave').textContent = PIX_CHAVE;
   document.getElementById('footer-ano').textContent = new Date().getFullYear();
   carregarDados();
 });
 
-setInterval(() => { carregarDados(); }, 30000);
+setInterval(() => {
+  carregarDados();
+}, 30000);
 
+// ══════════════════════════════════════════
+// CARREGAR DADOS
+// ══════════════════════════════════════════
 async function carregarDados() {
   try {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=${SHEET_RANGE}&_=${Date.now()}`;
@@ -1370,16 +1413,27 @@ async function carregarDados() {
     todosNumeros = rows.map((row) => {
       const num = row.c[0]?.v ? String(row.c[0].v).padStart(2, '0') : '';
       const nome = row.c[1]?.v ? String(row.c[1].v).trim() : '';
-      return { num, nome, livre: nome === '' };
+
+      return {
+        num,
+        nome,
+        livre: nome === ''
+      };
     });
+
   } catch(e) {
     console.warn('Erro ao carregar planilha', e);
   }
+
   renderizar();
 }
 
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
 function renderizar() {
   const container = document.getElementById('numbers-container');
+
   const vendidos   = todosNumeros.filter(n => !n.livre);
   const livres     = todosNumeros.filter(n => n.livre);
   const arrecadado = vendidos.length * 15;
@@ -1390,13 +1444,16 @@ function renderizar() {
   document.getElementById('count-vendido').textContent = `${vendidos.length} vendidos`;
   document.getElementById('count-valor').textContent   = `R$ ${arrecadado}`;
   document.getElementById('restantes-goal').textContent = livres.length;
+
   document.getElementById('valor-arrecadado').textContent = `R$ ${arrecadado}`;
   document.getElementById('percent-text').textContent = `${pct}% concluído`;
   document.getElementById('progress-fill').style.width = pct + '%';
 
   let lista = todosNumeros;
+
   if (filtroAtivo === 'livre')   lista = lista.filter(n => n.livre);
   if (filtroAtivo === 'vendido') lista = lista.filter(n => !n.livre);
+
   if (buscaTermo) {
     const t = buscaTermo.toLowerCase();
     lista = lista.filter(n => n.num.includes(t) || n.nome.toLowerCase().includes(t));
@@ -1408,7 +1465,10 @@ function renderizar() {
   lista.forEach(n => {
     const card = document.createElement('div');
     card.className = `num-card ${n.livre ? 'livre' : 'vendido'}`;
-    if (selecionados.find(x => x.num === n.num)) card.classList.add('selected');
+
+    if (selecionados.find(x => x.num === n.num)) {
+      card.classList.add('selected');
+    }
 
     card.innerHTML = `
       <span class="num-num">${n.num}</span>
@@ -1416,17 +1476,25 @@ function renderizar() {
       <span class="num-tag">${n.livre ? 'Livre' : 'Vendido'}</span>
     `;
 
-    if (n.livre) card.addEventListener('click', () => toggleNumero(n, card));
+    if (n.livre) {
+      card.addEventListener('click', () => toggleNumero(n, card));
+    }
+
     grid.appendChild(card);
   });
 
   container.innerHTML = '';
   container.appendChild(grid);
+
   atualizarBarraSelecao();
 }
 
+// ══════════════════════════════════════════
+// SELEÇÃO
+// ══════════════════════════════════════════
 function toggleNumero(n, card) {
   const index = selecionados.findIndex(x => x.num === n.num);
+
   if (index > -1) {
     selecionados.splice(index, 1);
     card.classList.remove('selected');
@@ -1434,12 +1502,14 @@ function toggleNumero(n, card) {
     selecionados.push(n);
     card.classList.add('selected');
   }
+
   atualizarBarraSelecao();
 }
 
 function atualizarBarraSelecao() {
   const barra = document.getElementById('barra-selecao');
   const qtd = selecionados.length;
+
   if (qtd > 0) {
     barra.style.display = 'flex';
     document.getElementById('qtd-selecionados').textContent =
@@ -1449,13 +1519,26 @@ function atualizarBarraSelecao() {
   }
 }
 
+// ══════════════════════════════════════════
+// WHATSAPP
+// ══════════════════════════════════════════
 function enviarWhats() {
   if (!selecionados.length) return;
+
   const numeros = selecionados.map(n => n.num).join(', ');
-  const mensagem = `Oi! Quero reservar esses números da rifa da Bárbara:\n\n${numeros}`;
-  window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`, '_blank');
+
+  const mensagem =
+    `Oi! Quero reservar esses números da rifa da Bárbara:\n\n${numeros}`;
+
+  window.open(
+    `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`,
+    '_blank'
+  );
 }
 
+// ══════════════════════════════════════════
+// FILTROS
+// ══════════════════════════════════════════
 function filtrar(tipo) {
   filtroAtivo = tipo;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1468,18 +1551,12 @@ function buscar(val) {
   renderizar();
 }
 
+// ══════════════════════════════════════════
+// PIX
+// ══════════════════════════════════════════
 function copiarPix() {
   const chave = document.getElementById('pix-chave').textContent;
   navigator.clipboard.writeText(chave);
-  const el = document.getElementById('pix-copied');
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2000);
-}
-
-function fecharModal(e) {
-  if (!e || e.target.classList.contains('modal-backdrop')) {
-    document.getElementById('modal').classList.remove('open');
-  }
 }
 </script>
 </body>
