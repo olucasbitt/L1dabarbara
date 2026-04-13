@@ -1431,7 +1431,7 @@ function renderizar() {
   document.getElementById('percent-text').textContent = `${pct}% concluído`;
   document.getElementById('progress-fill').style.width = pct + '%';
 
-  let lista = todosNumeros;
+let lista = [...todosNumeros].sort((a, b) => Number(b.num) - Number(a.num));
   if (filtroAtivo === 'livre')   lista = lista.filter(n => n.livre);
   if (filtroAtivo === 'vendido') lista = lista.filter(n => !n.livre);
   if (buscaTermo) {
