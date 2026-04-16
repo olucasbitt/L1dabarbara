@@ -1153,6 +1153,20 @@
       <div class="stat-label">Vendidos</div>
     </div>
   </div>
+  <div id="faltam-banner" style="
+	  margin-top:20px;
+	  background: linear-gradient(135deg, rgba(47,128,237,0.15), rgba(86,163,255,0.1));
+	  border:1px solid rgba(47,128,237,0.4);
+	  padding:12px 22px;
+	  border-radius:100px;
+	  font-size:14px;
+	  font-weight:600;
+	  letter-spacing:0.05em;
+	  color:#56A3FF;
+	  box-shadow:0 0 20px rgba(47,128,237,0.2);
+	">
+	  Faltam apenas — números
+	</div>
 
   <p style="margin-top:32px; font-size:13px; color:var(--muted); max-width:420px;">
     Cada número comprado é um passo mais perto do sonho dela 💪
@@ -1188,41 +1202,43 @@
 
 <!-- ══ PRÊMIOS ══ -->
 <section id="premios">
-  <div class="container">
-    <p class="section-label">Premiação</p>
-    <h2 class="section-title">O QUE VOCÊ<br>PODE GANHAR</h2>
-    <p class="section-sub">Além de ajudar a Bárbara, você ainda concorre a prêmios especiais 🎁</p>
+  <div class="premios-grid">
 
-    <div class="premios-grid">
-      <div class="premio-card destaque">
-        <div class="premio-badge">1º PRÊMIO</div>
-        <div class="premio-icon">🥇</div>
-        <h3>1º PRÊMIO</h3>
-        <p>Um mês de treino na</p>
-        <div class="premio-valor">Viamão Crossfit</div>
-      </div>
-
-      <div class="premio-card">
-        <div class="premio-badge">2º PRÊMIO</div>
-        <div class="premio-icon">🥈</div>
-        <h3>Segundo Prêmio</h3>
-        <p>Uma consulta com a nutricionista esportiva e CrossFit Level 1 Trainer</p>
-        <div class="premio-valor">Aline Mambac</div>
-      </div>
-
-      <div class="premio-card">
-        <div class="premio-badge">3º PRÊMIO</div>
-        <div class="premio-icon">🥉</div>
-        <h3>Terceiro Prêmio</h3>
-        <p>Um ensaio do seu treino com o fotográfo e CrossFit Level 2 Trainer</p>
-        <div class="premio-valor">Andherson Maeda</div>
-      </div>
-    </div>
-
-    <div class="premio-info">
-      <p>🎥 Transparência total — sorteio será divulgado.</p>
-    </div>
+  <div class="premio-card destaque">
+    <div class="premio-badge">1º PRÊMIO</div>
+    <div class="premio-icon">🥇</div>
+    <h3>1º PRÊMIO</h3>
+    <p>Um mês de treino na</p>
+    <div class="premio-valor">Viamão Crossfit</div>
   </div>
+
+  <div class="premio-card">
+    <div class="premio-badge">2º PRÊMIO</div>
+    <div class="premio-icon">🥈</div>
+    <h3>Segundo Prêmio</h3>
+    <p>Uma consulta com a nutricionista esportiva e CrossFit Level 1 Trainer</p>
+    <div class="premio-valor">Aline Mambac</div>
+  </div>
+
+  <div class="premio-card">
+    <div class="premio-badge">3º PRÊMIO</div>
+    <div class="premio-icon">🥉</div>
+    <h3>Terceiro Prêmio</h3>
+    <p>Um ensaio do seu treino com o fotógrafo e CrossFit Level 2 Trainer</p>
+    <div class="premio-valor">Andherson Maeda</div>
+  </div>
+
+  <!-- 🔥 NOVO PRÊMIO TOP COMPRADOR -->
+  <div class="premio-card" style="border:1px solid rgba(47,128,237,0.5); box-shadow:0 0 30px rgba(47,128,237,0.15);">
+    <div class="premio-badge">🔥 TOP COMPRADOR</div>
+    <div class="premio-icon">💰</div>
+    <h3>Maior comprador</h3>
+    <p>Quem comprar mais números ganha R$200,00 em vale compras na:</p>
+    <div class="premio-valor">Tika Soul Fit</div>
+    
+  </div>
+
+</div>
 </section>
 
 <!-- ══ RIFA ══ -->
@@ -1261,6 +1277,30 @@
         <span id="count-valor">R$ 0 arrecadados</span>
       </div>
     </div>
+	 
+<div id="top-compradores" style="
+  margin-top:40px;
+  background: var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+">
+  <h3 style="
+    font-family:'Bebas Neue';
+    font-size:22px;
+    letter-spacing:0.05em;
+    margin-bottom:16px;
+    background: var(--grad-fire);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  ">
+    TOP 3 COMPRADORES 🔥
+  </h3>
+
+  <div id="top-list" style="display:flex; flex-direction:column; gap:10px;">
+    <!-- preenchido via JS -->
+  </div>
+</div>
   </div>
 </section>
 
@@ -1431,7 +1471,39 @@ function renderizar() {
   document.getElementById('percent-text').textContent = `${pct}% concluído`;
   document.getElementById('progress-fill').style.width = pct + '%';
 
-let lista = [...todosNumeros].sort((a, b) => Number(b.num) - Number(a.num));
+  // 🔥 FALTAM APENAS X
+  document.getElementById('faltam-banner').textContent =
+    `Faltam apenas ${livres.length} números`;
+
+  // 🔥 TOP 3 COMPRADORES
+  const contagem = {};
+  vendidos.forEach(n => {
+    const nome = n.nome || 'Anônimo';
+    contagem[nome] = (contagem[nome] || 0) + 1;
+  });
+
+  const ranking = Object.entries(contagem)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,3);
+
+  const topList = document.getElementById('top-list');
+  topList.innerHTML = '';
+
+  ranking.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.display = 'flex';
+    div.style.justifyContent = 'space-between';
+    div.style.background = 'var(--surface2)';
+    div.style.padding = '10px 14px';
+    div.style.borderRadius = '8px';
+    div.innerHTML = `
+      <span>${i+1}º ${item[0]}</span>
+      <strong>${item[1]} números</strong>
+    `;
+    topList.appendChild(div);
+  });
+
+  let lista = [...todosNumeros].sort((a, b) => Number(b.num) - Number(a.num));
   if (filtroAtivo === 'livre')   lista = lista.filter(n => n.livre);
   if (filtroAtivo === 'vendido') lista = lista.filter(n => !n.livre);
   if (buscaTermo) {
